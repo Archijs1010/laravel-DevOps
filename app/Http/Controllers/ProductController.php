@@ -17,35 +17,32 @@ class ProductController extends Controller
     }
 
     public function store(Request $request) {
-        $data = [
-            'name' => $request->name,
-            'quantity' => $request->quantity,
-            'description' => $request->description,
-        ];
+        $Data = $request->validate([
+        'name' => 'required|string|max:255',
+        'quantity' => 'required|integer|min:1',
+        'description' => 'nullable|string|max:1000',
+    ]);
+        $product = Product::create($Data);
 
-        $product = Product::create($data);
-        return redirect('/products/' . $product->id . '/show');
+        
+        return redirect()->route('products.index', compact('product'))->with('success', 'Produkts veiksmīgi izveidots!');
     }
 
-    public function show($id) {
-        $product = Product::find($id);
+    public function show(Product $product) {
         return view('products.show', ['singleProduct' => $product]);
     }
 
-    public function destroy($id) {
-        $product = Product::find($id);
+    public function destroy(Product $product) {
         $product->delete();
-        return redirect('/products/');
+         return redirect()->route('products.index');
     }
 
-    public function edit($id) {
-        $product = Product::find($id);
-        return view('products.edit', ['singleProduct' => $product]);
+    public function edit(Product $product) {
+        return view('products.edit', compact('product'));
+        
     }
 
-    public function update(Request $request, $id) {
-        $product = Product::find($id);
-
+    public function update(Request $request, Product $product) {
         $data = [
             'name' => $request->name,
             'quantity' => $request->quantity,
@@ -53,6 +50,6 @@ class ProductController extends Controller
         ];
 
         $product->update($data);
-        return redirect('/products/' . $product->id . '/show');
+        return redirect()->route('products.show', [$product]);
     }
 }
