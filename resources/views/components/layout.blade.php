@@ -70,12 +70,33 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.05);
         }
+        header {
+            grid-area: header;
+        }
+        main {
+            grid-area: main;
+        }
+        aside {
+            grid-area: sidebar;
+        }
+        footer {
+            grid-area: footer;
+        }
 
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: auto;
+            grid-template-areas: 
+                "header header header header"
+                "main main main sidebar"
+                "footer footer footer footer";
+        }
     </style>
 </head>
 <body>
     <x-navigation />
-
+    <x-aside style="grid-area: sidebar;"></x-aside>
     <main>
         <h1>Products</h1>
         <hr>
@@ -95,8 +116,10 @@
                 </ul>
             </div>
         @endif
-
+        
         {{ $slot }}
     </main>
+    
+    <x-footer />
 </body>
 </html>

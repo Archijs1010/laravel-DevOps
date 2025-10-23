@@ -1,6 +1,6 @@
 <header>
 </header>
-
+<x-layout>
 <form action="{{ route('products.update', [$singleProduct]) }}" method="post">
     @csrf
     @method('PUT')
@@ -12,3 +12,4 @@
 </form>
 
 <a href="/products">Back to product list</a>
+</x-layout>
